@@ -1,3 +1,2 @@
-# latkProcessing
-<img src="./documentation/images/logo.png"><br>
-Read and write Latk files in Processing. Last tested in Processing 3.5.
+# tiltProcessing
+Read Tilt Brush files in Processing. Last tested in Processing 3.5.
