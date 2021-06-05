@@ -1,9 +1,9 @@
-package latkProcessing;
+package tiltProcessing;
 
 import processing.core.*;
 import java.util.ArrayList;
 
-public class LatkStroke {
+public class Stroke {
   
   PApplet parent;
 
@@ -13,7 +13,7 @@ public class LatkStroke {
   public float globalScale;
   public PVector globalOffset;
     
-  public LatkStroke(PApplet _parent, ArrayList<LatkPoint> _p, int _c) {
+  public Stroke(PApplet _parent, ArrayList<LatkPoint> _p, int _c) {
     parent = _parent;
     init(_p, _c);
   }

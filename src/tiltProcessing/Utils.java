@@ -1,15 +1,15 @@
-package latkProcessing;
+package tiltProcessing;
 
 import processing.core.*;
 import java.util.ArrayList;
 
-public class LatkFrame {
+public class Utils {
 
   PApplet parent;
 
   public ArrayList<LatkStroke> strokes;
   
-  public LatkFrame(PApplet _parent) { 
+  public Utils(PApplet _parent) { 
     parent = _parent;
     strokes = new ArrayList<LatkStroke>();
   }

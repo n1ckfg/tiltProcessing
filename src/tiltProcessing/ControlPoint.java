@@ -1,8 +1,8 @@
-package latkProcessing;
+package tiltProcessing;
 
 import processing.core.*;
 
-public class LatkPoint {
+public class ControlPoint {
 
   PApplet parent;
 
@@ -11,7 +11,7 @@ public class LatkPoint {
   public float strength;
   public int vertex_color;
 
-  public LatkPoint(PApplet _parent) {
+  public ControlPoint(PApplet _parent) {
     parent = _parent;
     co = new PVector(0,0,0);
     pressure = 1.0f;
@@ -19,7 +19,7 @@ public class LatkPoint {
     vertex_color = parent.color(0,0,0,0);
   }
   
-  public LatkPoint(PApplet _parent, PVector _co) {
+  public ControlPoint(PApplet _parent, PVector _co) {
     parent = _parent;
     co = _co;
     pressure = 1.0f;
@@ -27,7 +27,7 @@ public class LatkPoint {
     vertex_color = parent.color(0,0,0,0);
   }
   
-  public LatkPoint(PApplet _parent, PVector _co, int _vertex_color) {
+  public ControlPoint(PApplet _parent, PVector _co, int _vertex_color) {
     parent = _parent;
     co = _co;
     pressure = 1.0f;
@@ -35,7 +35,7 @@ public class LatkPoint {
     vertex_color = _vertex_color;
   }
   
-  public LatkPoint(PApplet _parent, PVector _co, float _pressure, float _strength) {
+  public ControlPoint(PApplet _parent, PVector _co, float _pressure, float _strength) {
     parent = _parent;
     co = _co;
     pressure = _pressure;
@@ -43,7 +43,7 @@ public class LatkPoint {
     vertex_color = parent.color(0,0,0,0);
   } 
  
-  public LatkPoint(PApplet _parent, PVector _co, float _pressure, float _strength, int _vertex_color) {
+  public ControlPoint(PApplet _parent, PVector _co, float _pressure, float _strength, int _vertex_color) {
     parent = _parent;
     co = _co;
     pressure = _pressure;

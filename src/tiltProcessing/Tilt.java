@@ -1,4 +1,4 @@
-package latkProcessing;
+package tiltProcessing;
 
 import java.io.*;
 import java.nio.*;
@@ -13,7 +13,7 @@ import processing.core.*;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
 
-public class Latk {
+public class Tilt {
   
   PApplet parent;
 
@@ -39,7 +39,7 @@ public class Latk {
   public int cleanMinPoints;
   public float cleanMinLength;
   
-  public Latk(PApplet _parent) {
+  public Tilt(PApplet _parent) {
     init(_parent);
 
     layers = new ArrayList<LatkLayer>();
@@ -47,7 +47,7 @@ public class Latk {
     layers.get(layers.size()-1).frames.add(new LatkFrame(parent));
   }
   
-  public Latk(PApplet _parent, ArrayList<LatkPoint> _pts, int _c) {
+  public Tilt(PApplet _parent, ArrayList<LatkPoint> _pts, int _c) {
     init(_parent);
 
     layers = new ArrayList<LatkLayer>();
@@ -58,14 +58,14 @@ public class Latk {
     layers.get(layers.size()-1).frames.get(layers.get(layers.size()-1).frames.size()-1).strokes.add(st);
   }
   
-  public Latk(PApplet _parent, ArrayList<Latk> _latks) {
+  public Tilt(PApplet _parent, ArrayList<Latk> _latks) {
     init(_parent);
 
     // TODO
     // read with clear existing false
   }
   
-  public Latk(PApplet _parent, String fileName) {
+  public Tilt(PApplet _parent, String fileName) {
     init(_parent);
 
     read(fileName, true);

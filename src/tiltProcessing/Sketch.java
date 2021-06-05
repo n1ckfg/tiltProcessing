@@ -1,9 +1,9 @@
-package latkProcessing;
+package tiltProcessing;
 
 import processing.core.*;
 import java.util.ArrayList;
 
-public class LatkLayer {
+public class Sketch {
 
   PApplet parent;
 
@@ -11,7 +11,7 @@ public class LatkLayer {
   public int currentFrame;
   public String name;
   
-  public LatkLayer(PApplet _parent) { 
+  public Sketch(PApplet _parent) { 
     parent = _parent;
     frames = new ArrayList<LatkFrame>();
     currentFrame = 0;
