@@ -8,17 +8,17 @@ public class Stroke {
   PApplet parent;
 
   public PShape s;
-  public ArrayList<LatkPoint> points;
+  public ArrayList<ControlPoint> points;
   public int col;
   public float globalScale;
   public PVector globalOffset;
     
-  public Stroke(PApplet _parent, ArrayList<LatkPoint> _p, int _c) {
+  public Stroke(PApplet _parent, ArrayList<ControlPoint> _p, int _c) {
     parent = _parent;
     init(_p, _c);
   }
 
-  public void init(ArrayList<LatkPoint> _p, int _c) {
+  public void init(ArrayList<ControlPoint> _p, int _c) {
     col = parent.color(255);
     globalScale = 1;
     globalOffset = new PVector(0,0,0);
@@ -56,7 +56,7 @@ public class Stroke {
     return points;
   }
   
-  public void setPoints(ArrayList<LatkPoint> _p) {
+  public void setPoints(ArrayList<ControlPoint> _p) {
     s = parent.createShape();
     s.beginShape();
     s.noFill();

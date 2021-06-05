@@ -7,11 +7,11 @@ public class Utils {
 
   PApplet parent;
 
-  public ArrayList<LatkStroke> strokes;
+  public ArrayList<Stroke> strokes;
   
   public Utils(PApplet _parent) { 
     parent = _parent;
-    strokes = new ArrayList<LatkStroke>();
+    strokes = new ArrayList<Stroke>();
   }
   
   public void run() {

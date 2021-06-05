@@ -24,7 +24,7 @@ public class Tilt {
   public JSONObject jsonStroke;
   public JSONObject jsonPoint;
   
-  public ArrayList<LatkLayer> layers;
+  public ArrayList<Sketch> sketches;
 
   public String jsonFilename;
   public float globalScale;
@@ -42,20 +42,20 @@ public class Tilt {
   public Tilt(PApplet _parent) {
     init(_parent);
 
-    layers = new ArrayList<LatkLayer>();
-    layers.add(new LatkLayer(parent));
-    layers.get(layers.size()-1).frames.add(new LatkFrame(parent));
+    sketches = new ArrayList<Sketch>();
+    sketches.add(new Sketch(parent));
+    sketches.get(sketches.size()-1).frames.add(new LatkFrame(parent));
   }
   
   public Tilt(PApplet _parent, ArrayList<LatkPoint> _pts, int _c) {
     init(_parent);
 
-    layers = new ArrayList<LatkLayer>();
-    layers.add(new LatkLayer(parent));
-    layers.get(layers.size()-1).frames.add(new LatkFrame(parent));
+    sketches = new ArrayList<Sketch>();
+    sketches.add(new Sketch(parent));
+    sketches.get(sketches.size()-1).frames.add(new LatkFrame(parent));
     
     LatkStroke st = new LatkStroke(parent, _pts, _c);
-    layers.get(layers.size()-1).frames.get(layers.get(layers.size()-1).frames.size()-1).strokes.add(st);
+    sketches.get(sketches.size()-1).frames.get(sketches.get(sketches.size()-1).frames.size()-1).strokes.add(st);
   }
   
   public Tilt(PApplet _parent, ArrayList<Latk> _latks) {
@@ -93,8 +93,8 @@ public class Tilt {
   public void run() {
     boolean advanceFrame = checkInterval();
     
-    for (int i=0; i<layers.size(); i++) {
-      LatkLayer layer = layers.get(i);
+    for (int i=0; i<sketches.size(); i++) {
+      Sketch layer = sketches.get(i);
       if (advanceFrame) layer.nextFrame();
       layer.run();
     }
@@ -105,8 +105,8 @@ public class Tilt {
   public void run(PGraphics g) {
     boolean advanceFrame = checkInterval();
     
-    for (int i=0; i<layers.size(); i++) {
-      LatkLayer layer = layers.get(i);
+    for (int i=0; i<sketches.size(); i++) {
+      Sketch layer = sketches.get(i);
       if (advanceFrame) layer.nextFrame();
       layer.run(g);
     }
@@ -146,7 +146,7 @@ public class Tilt {
   }
   
   public void read(String fileName, boolean clearExisting) {
-    if (clearExisting) layers = new ArrayList<LatkLayer>();
+    if (clearExisting) sketches = new ArrayList<Sketch>();
     
     if (getExtFromFileName(fileName).equals("json")) {
       String url = getFilePath(fileName);
@@ -184,12 +184,12 @@ public class Tilt {
     for (int h=0; h<json.getJSONArray("grease_pencil").size(); h++) {
       jsonGp = (JSONObject) json.getJSONArray("grease_pencil").get(h);
       
-      for (int i=0; i<jsonGp.getJSONArray("layers").size(); i++) {
-        layers.add(new LatkLayer(parent));
+      for (int i=0; i<jsonGp.getJSONArray("sketches").size(); i++) {
+        sketches.add(new Sketch(parent));
         
-        jsonLayer = (JSONObject) jsonGp.getJSONArray("layers").get(i);
+        jsonLayer = (JSONObject) jsonGp.getJSONArray("sketches").get(i);
         for (int j=0; j<jsonLayer.getJSONArray("frames").size(); j++) {
-          layers.get(layers.size()-1).frames.add(new LatkFrame(parent));
+          sketches.get(sketches.size()-1).frames.add(new LatkFrame(parent));
 
           jsonFrame = (JSONObject) jsonLayer.getJSONArray("frames").get(j);
           for (int l=0; l<jsonFrame.getJSONArray("strokes").size(); l++) {
@@ -209,7 +209,7 @@ public class Tilt {
             
             LatkStroke st = new LatkStroke(parent, pts, col);
             st.globalScale = globalScale;
-            layers.get(layers.size()-1).frames.get(layers.get(layers.size()-1).frames.size()-1).strokes.add(st);
+            sketches.get(sketches.size()-1).frames.get(sketches.get(sketches.size()-1).frames.size()-1).strokes.add(st);
           }
         }
       }
@@ -219,7 +219,7 @@ public class Tilt {
   public void write(String fileName) {
     ArrayList<String> FINAL_LAYER_LIST = new ArrayList<String>();
 
-    for (int hh = 0; hh < layers.size(); hh++) {
+    for (int hh = 0; hh < sketches.size(); hh++) {
         currentLayer = hh;
 
         ArrayList<String> sb = new ArrayList<String>();
@@ -227,26 +227,26 @@ public class Tilt {
         sbHeader.add("\t\t\t\t\t\"frames\":[");
         sb.add(String.join("\n", sbHeader.toArray(new String[sbHeader.size()])));
 
-        for (int h = 0; h < layers.get(currentLayer).frames.size(); h++) {
-            layers.get(currentLayer).currentFrame = h;
+        for (int h = 0; h < sketches.get(currentLayer).frames.size(); h++) {
+            sketches.get(currentLayer).currentFrame = h;
 
             ArrayList<String> sbbHeader = new ArrayList<String>();
             sbbHeader.add("\t\t\t\t\t\t{");
             sbbHeader.add("\t\t\t\t\t\t\t\"strokes\":[");
             sb.add(String.join("\n", sbbHeader.toArray(new String[sbbHeader.size()])));
-            for (int i = 0; i < layers.get(currentLayer).frames.get(layers.get(currentLayer).currentFrame).strokes.size(); i++) {
+            for (int i = 0; i < sketches.get(currentLayer).frames.get(sketches.get(currentLayer).currentFrame).strokes.size(); i++) {
                 ArrayList<String> sbb = new ArrayList<String>();
                 sbb.add("\t\t\t\t\t\t\t\t{");
-                int col = layers.get(currentLayer).frames.get(layers.get(currentLayer).currentFrame).strokes.get(i).col;
+                int col = sketches.get(currentLayer).frames.get(sketches.get(currentLayer).currentFrame).strokes.get(i).col;
                 float r1 = parent.red(col)/255.0f; //rounder(red(col) / 255.0, 5);
                 float g1 = parent.green(col)/255.0f;
                 float b1 = parent.blue(col)/255.0f;
                 sbb.add("\t\t\t\t\t\t\t\t\t\"color\":[" + r1 + ", " + g1 + ", " + b1 + "],");
 
-                if (layers.get(currentLayer).frames.get(layers.get(currentLayer).currentFrame).strokes.get(i).points.size() > 0) {
+                if (sketches.get(currentLayer).frames.get(sketches.get(currentLayer).currentFrame).strokes.get(i).points.size() > 0) {
                     sbb.add("\t\t\t\t\t\t\t\t\t\"points\":[");
-                    for (int j = 0; j < layers.get(currentLayer).frames.get(layers.get(currentLayer).currentFrame).strokes.get(i).points.size(); j++) {
-                        LatkPoint lp = layers.get(currentLayer).frames.get(layers.get(currentLayer).currentFrame).strokes.get(i).points.get(j);
+                    for (int j = 0; j < sketches.get(currentLayer).frames.get(sketches.get(currentLayer).currentFrame).strokes.get(i).points.size(); j++) {
+                        LatkPoint lp = sketches.get(currentLayer).frames.get(sketches.get(currentLayer).currentFrame).strokes.get(i).points.get(j);
                         PVector co = lp.co;
                         int vertex_color = lp.vertex_color;
                         //pt.mult(1.0/globalScale);
@@ -257,7 +257,7 @@ public class Tilt {
                         float a = 1.0f;
                         String pointString = "\t\t\t\t\t\t\t\t\t\t{\"co\":[" + co.x + ", " + co.y + ", " + co.z + "], \"pressure\":1, \"strength\":1, \"vertex_color\":[" + r + ", " + g + ", " + b + ", " + a + "]}";
 
-                        if (j == layers.get(currentLayer).frames.get(layers.get(currentLayer).currentFrame).strokes.get(i).points.size() - 1) {
+                        if (j == sketches.get(currentLayer).frames.get(sketches.get(currentLayer).currentFrame).strokes.get(i).points.size() - 1) {
                             sbb.add(pointString);
                             sbb.add("\t\t\t\t\t\t\t\t\t]");
                         } else {
@@ -268,7 +268,7 @@ public class Tilt {
                     sbb.add("\t\t\t\t\t\t\t\t\t\"points\":[]");
                 }
 
-                if (i == layers.get(currentLayer).frames.get(layers.get(currentLayer).currentFrame).strokes.size() - 1) {
+                if (i == sketches.get(currentLayer).frames.get(sketches.get(currentLayer).currentFrame).strokes.size() - 1) {
                     sbb.add("\t\t\t\t\t\t\t\t}");
                 } else {
                     sbb.add("\t\t\t\t\t\t\t\t},");
@@ -278,7 +278,7 @@ public class Tilt {
             }
 
             ArrayList<String> sbFooter = new ArrayList<String>();
-            if (h == layers.get(currentLayer).frames.size() - 1) {
+            if (h == sketches.get(currentLayer).frames.size() - 1) {
                 sbFooter.add("\t\t\t\t\t\t\t]");
                 sbFooter.add("\t\t\t\t\t\t}");
             } else {
@@ -297,14 +297,14 @@ public class Tilt {
     s.add("\t\"version\": 2.8,");
     s.add("\t\"grease_pencil\":[");
     s.add("\t\t{");
-    s.add("\t\t\t\"layers\":[");
+    s.add("\t\t\t\"sketches\":[");
 
-    for (int i = 0; i < layers.size(); i++) {
+    for (int i = 0; i < sketches.size(); i++) {
         currentLayer = i;
 
         s.add("\t\t\t\t{");
-        if (layers.get(currentLayer).name != null && layers.get(currentLayer).name != "") {
-            s.add("\t\t\t\t\t\"name\": \"" + layers.get(currentLayer).name + "\",");
+        if (sketches.get(currentLayer).name != null && sketches.get(currentLayer).name != "") {
+            s.add("\t\t\t\t\t\"name\": \"" + sketches.get(currentLayer).name + "\",");
         } else {
             s.add("\t\t\t\t\t\"name\": \"UnityLayer " + (currentLayer + 1) + "\",");
         }
@@ -312,13 +312,13 @@ public class Tilt {
         s.add(FINAL_LAYER_LIST.get(currentLayer));
 
         s.add("\t\t\t\t\t]");
-        if (currentLayer < layers.size() - 1) {
+        if (currentLayer < sketches.size() - 1) {
             s.add("\t\t\t\t},");
         } else {
             s.add("\t\t\t\t}");
         }
     }
-    s.add("\t\t\t]"); // end layers
+    s.add("\t\t\t]"); // end sketches
     s.add("\t\t}");
     s.add("\t]");
     s.add("}");
@@ -352,8 +352,8 @@ public class Tilt {
   }
 
   public void clean() {
-    for (int i=0; i<layers.size(); i++) {
-      LatkLayer layer = layers.get(i);
+    for (int i=0; i<sketches.size(); i++) {
+      Sketch layer = sketches.get(i);
       for (int j=0; j<layer.frames.size(); j++) {
         LatkFrame frame = layer.frames.get(j);
         for (int k=0; k<frame.strokes.size(); k++) {
