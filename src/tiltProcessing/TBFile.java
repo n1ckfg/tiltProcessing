@@ -72,7 +72,7 @@ public class TBFile {
         }
     }
 
-    #region Read
+    //#region Read
 
     static TBBrushStrokes ReadBrushStrokes(string path) {
         using (Stream stream = File.OpenRead(path)) {
@@ -90,9 +90,9 @@ public class TBFile {
         return File.ReadAllBytes(path);
     }
 
-    #endregion
+    //#endregion
 
-    #region Write
+    //#region Write
 
     public void Write(string path) {
         string tempDir = GetTempDirectory(".tilt-out");
@@ -141,9 +141,9 @@ public class TBFile {
         File.WriteAllBytes(thumbnailFile, m_thumbnailBytes);
     }
 
-    #endregion
+    //#endregion
 
-    #region Helpers
+    //#region Helpers
 
     static string GetTempDirectory(string name, bool createIsNotExists = true) {
         string tempDir = Path.Combine(Path.GetTempPath(), name);
@@ -158,9 +158,9 @@ public class TBFile {
         return tempDir;
     }
 
-    #endregion
+    //#endregion
 
-    #region Clonable
+    //#region Clonable
 
     public TBFile Clone() {
         TBFile clone = new TBFile();
@@ -172,7 +172,7 @@ public class TBFile {
         return clone;
     }
 
-    #endregion
+    //#endregion
 
     public TBBrushStrokes brushStrokes {
         get { return m_brushStrokes; }

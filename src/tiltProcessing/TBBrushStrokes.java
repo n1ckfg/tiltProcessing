@@ -62,23 +62,23 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
         m_brushStrokes.Add(brushStroke);
     }
 
-    #region IEnumerable implementation
+    //#region IEnumerable implementation
 
     public IEnumerator<TBBrushStroke> GetEnumerator() {
         return m_brushStrokes.GetEnumerator();
     }
 
-    #endregion
+    //#endregion
 
-    #region IEnumerable implementation
+    //#region IEnumerable implementation
 
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
         return m_brushStrokes.GetEnumerator();
     }
 
-    #endregion
+    //#endregion
 
-    #region Clonable
+    //#region Clonable
 
     public TBBrushStrokes Clone() {
         TBBrushStrokes clone = new TBBrushStrokes();
@@ -94,7 +94,7 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
         return clone;
     }
 
-    #endregion
+    //#endregion
 
     public List<TBBrushStroke> brushStrokes {
         get { return m_brushStrokes; }

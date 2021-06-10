@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public static class TBExtensions {
 
-    #region BinaryReader
+    //#region BinaryReader
 
     public static string ReadString(this BinaryReader reader, int length) {
         char[] chars = new char[length];
@@ -53,9 +53,9 @@ public static class TBExtensions {
         reader.BaseStream.Position += size;
     }
 
-    #endregion
+    //#endregion
 
-    #region Binarywriter
+    //#region Binarywriter
 
     public static void Write(this BinaryWriter writer, string value, int length) {
         char[] chars = value.ToCharArray(0, length);
@@ -82,9 +82,9 @@ public static class TBExtensions {
         writer.Write(value.w);
     }
 
-    #endregion
+    //#endregion
 
-    #region ZipEntry
+    //#region ZipEntry
 
     public static string ExtractToFile(this ZipEntry entry, string baseDir) {
         string path = Path.Combine(baseDir, entry.FileName);
@@ -94,7 +94,7 @@ public static class TBExtensions {
         return path;
     }
 
-    #endregion
+    //#endregion
 }
 
 
