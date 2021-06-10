@@ -1,12 +1,12 @@
-﻿package tiltProcessing;
+package tiltProcessing;
 
 import processing.core.*;
 import java.util.ArrayList;
 
-public partial class TBBrushStroke {
+public class TBBrushStroke { //partial
 
-    const float kMinValue = -10000;
-    const float kMaxValue = 10000;
+    final float kMinValue = -10000; //const
+    final float kMaxValue = 10000; //const
 
     public Bounds bounds {
         get {

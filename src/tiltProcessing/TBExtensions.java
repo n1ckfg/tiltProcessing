@@ -1,4 +1,4 @@
-﻿package tiltProcessing;
+package tiltProcessing;
 
 import processing.core.*;
 

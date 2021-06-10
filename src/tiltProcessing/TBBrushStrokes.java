@@ -1,11 +1,11 @@
-﻿package tiltProcessing;
+package tiltProcessing;
 
 import processing.core.*;
 import java.util.ArrayList;
 
 public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
 
-    const UInt32 SKETCH_SENTINEL = 3312887245u;
+    final UInt32 SKETCH_SENTINEL = 3312887245u; //const
 
     UInt32 m_version;
     UInt32 m_reserved;

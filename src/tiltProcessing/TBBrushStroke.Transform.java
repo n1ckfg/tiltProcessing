@@ -1,9 +1,9 @@
-﻿package tiltProcessing;
+package tiltProcessing;
 
 import processing.core.*;
 import java.util.ArrayList;
 
-public partial class TBBrushStroke {
+public class TBBrushStroke { //partial
 
     public Vector3 startPosition {
         get { return controlPoints[0].position; }
