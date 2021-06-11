@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class TBHeader {
 
-    static readonly string SKETCH_SENTINEL = "tilT";
+    static readonly String SKETCH_SENTINEL = "tilT";
 
-    string m_sentinel;
+    String m_sentinel;
 
     UInt16 m_headerSize;
     UInt16 m_headerVersion;

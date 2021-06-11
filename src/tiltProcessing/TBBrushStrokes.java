@@ -12,7 +12,7 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
     UInt32 m_size;
     byte[] m_payload;
 
-    List<TBBrushStroke> m_brushStrokes;
+    ArrayList<TBBrushStroke> m_brushStrokes;
 
     TBBrushStrokes() {
     	//
@@ -30,8 +30,8 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
         m_payload = new byte[m_size];
         reader.Read(m_payload, 0, m_payload.Length);
 
-        Int32 strokeCount = reader.ReadInt32();
-        m_brushStrokes = new List<TBBrushStroke>(strokeCount);
+        int strokeCount = reader.ReadInt32();
+        m_brushStrokes = new ArrayList<TBBrushStroke>(strokeCount);
         for (int strokeIndex = 0; strokeIndex < strokeCount; ++strokeIndex) {
             m_brushStrokes.Add(new TBBrushStroke(reader));
         }
@@ -43,7 +43,7 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
         writer.Write(m_reserved);
         writer.Write(m_size);
         writer.Write(m_payload);
-        writer.Write((Int32) m_brushStrokes.Count);
+        writer.Write((int) m_brushStrokes.Count);
 
         foreach (var brushStroke in m_brushStrokes) {
             brushStroke.Write(writer);
@@ -86,7 +86,7 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
         clone.m_reserved = m_reserved;
         clone.m_size = m_size;
         clone.m_payload = m_payload;
-        List<TBBrushStroke> brushStrokes = new List<TBBrushStroke>(m_brushStrokes.Count);
+        ArrayList<TBBrushStroke> brushStrokes = new ArrayList<TBBrushStroke>(m_brushStrokes.Count);
         foreach (var brushStroke in m_brushStrokes) {
             brushStrokes.Add(brushStroke.Clone());
         }
@@ -96,8 +96,8 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
 
     //#endregion
 
-    public List<TBBrushStroke> brushStrokes {
-        get { return m_brushStrokes; }
+    public ArrayList<TBBrushStroke> brushStrokes() {
+        return m_brushStrokes;
     }
 
 }

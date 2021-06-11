@@ -15,27 +15,27 @@ import java.util.ArrayList;
 //using Ionic.Zip;
 //using uint16 = System.UInt16;
 //using uint32 = System.UInt32;
-//using int32 = System.Int32;
+//using int32 = System.int;
 
 public class TBFile {
 
-    static readonly string kFileSketchData  = "data.sketch";
-    static readonly string kFileMetadata    = "metadata.json";
-    static readonly string kFileThumbnail   = "thumbnail.png";
+    static readonly String kFileSketchData  = "data.sketch";
+    static readonly String kFileMetadata    = "metadata.json";
+    static readonly String kFileThumbnail   = "thumbnail.png";
 
     private static readonly uint SKETCH_SENTINEL = 3312887245u;
     private static readonly int SKETCH_VERSION = 5;
 
     TBHeader m_header;
     TBBrushStrokes m_brushStrokes;
-    string m_metadata;
+    String m_metadata;
     byte[] m_thumbnailBytes;
 
     TBFile() {
     	//
     }
 
-    public TBFile(string path) {
+    public TBFile(String path) {
         using (FileStream stream = File.OpenRead(path)) {
             using (BinaryReader reader = new BinaryReader(stream)) {
                 Read(reader);
@@ -56,7 +56,7 @@ public class TBFile {
         reader.Read(bytes, 0, bytes.Length);
         using (MemoryStream stream = new MemoryStream(bytes)) {
             using (ZipFile zipFile = ZipFile.Read(stream)) {
-                string tempDir = GetTempDirectory(".tilt-in");
+                String tempDir = GetTempDirectory(".tilt-in");
                 foreach (var entry in zipFile.Entries) {
                     entry.ExtractToFile(tempDir);
                 }
@@ -74,7 +74,7 @@ public class TBFile {
 
     //#region Read
 
-    static TBBrushStrokes ReadBrushStrokes(string path) {
+    static TBBrushStrokes ReadBrushStrokes(String path) {
         using (Stream stream = File.OpenRead(path)) {
             using (BinaryReader reader = new BinaryReader(stream)) {
                 return new TBBrushStrokes(reader);
@@ -82,11 +82,11 @@ public class TBFile {
         }
     }
 
-    static string ReadMetadata(string path) {
+    static String ReadMetadata(String path) {
         return File.ReadAllText(path);
     }
 
-    static byte[] ReadThumbnailBytes(string path) {
+    static byte[] ReadThumbnailBytes(String path) {
         return File.ReadAllBytes(path);
     }
 
@@ -94,8 +94,8 @@ public class TBFile {
 
     //#region Write
 
-    public void Write(string path) {
-        string tempDir = GetTempDirectory(".tilt-out");
+    public void Write(String path) {
+        String tempDir = GetTempDirectory(".tilt-out");
         try {
             WriteToTempDir(tempDir);
 
@@ -104,7 +104,7 @@ public class TBFile {
                     m_header.Write(writer);
 
                     using (ZipFile zipFile = new ZipFile()) {
-                        string[] files = {
+                        String[] files = {
                             kFileThumbnail,
                             kFileSketchData,
                             kFileMetadata
@@ -126,18 +126,18 @@ public class TBFile {
         }
     }
 
-    void WriteToTempDir(string tempDir) {
-        string sketchFile  = Path.Combine(tempDir, "data.sketch");
+    void WriteToTempDir(String tempDir) {
+        String sketchFile  = Path.Combine(tempDir, "data.sketch");
         using (FileStream stream = File.OpenWrite(sketchFile)) {
             using (BinaryWriter writer = new BinaryWriter(stream)) {
                 m_brushStrokes.Write(writer);
             }
         }
 
-        string metadataFile = Path.Combine(tempDir, "metadata.json");
+        String metadataFile = Path.Combine(tempDir, "metadata.json");
         File.WriteAllText(metadataFile, m_metadata);
 
-        string thumbnailFile = Path.Combine(tempDir, "thumbnail.png");
+        String thumbnailFile = Path.Combine(tempDir, "thumbnail.png");
         File.WriteAllBytes(thumbnailFile, m_thumbnailBytes);
     }
 
@@ -145,8 +145,8 @@ public class TBFile {
 
     //#region Helpers
 
-    static string GetTempDirectory(string name, bool createIsNotExists = true) {
-        string tempDir = Path.Combine(Path.GetTempPath(), name);
+    static String GetTempDirectory(String name, bool createIsNotExists = true) {
+        String tempDir = Path.Combine(Path.GetTempPath(), name);
         if (Directory.Exists(tempDir)) {
             Directory.Delete(tempDir, true);
         }

@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 public class TBBrushStroke { //partial
 
-    Int32 m_brushIndex;
-    Color m_brushColor;
+    int m_brushIndex;
+    color m_brushColor;
     float m_brushSize;
     UInt32 m_reserver1;
     UInt32 m_reserver2;
     UInt32 m_strokeFlags;
-    List<TBControlPoint> m_controlPoints;
+    ArrayList<TBControlPoint> m_controlPoints;
 
     TBBrushStroke() {
     	//
@@ -25,7 +25,7 @@ public class TBBrushStroke { //partial
         m_reserver2 = reader.ReadUInt32();
         m_strokeFlags = reader.ReadUInt32();
         int controlPointCount = reader.ReadInt32();
-        m_controlPoints = new List<TBControlPoint>();
+        m_controlPoints = new ArrayList<TBControlPoint>();
         for (int pointIndex = 0; pointIndex < controlPointCount; ++pointIndex) {
             m_controlPoints.Add(new TBControlPoint(reader));
         }
@@ -38,7 +38,7 @@ public class TBBrushStroke { //partial
         writer.Write(m_reserver1);
         writer.Write(m_reserver2);
         writer.Write(m_strokeFlags);
-        writer.Write((Int32) m_controlPoints.Count);
+        writer.Write((int) m_controlPoints.Count);
         foreach (var controlPoint in m_controlPoints) {
             controlPoint.Write(writer);
         }
@@ -52,7 +52,7 @@ public class TBBrushStroke { //partial
         clone.m_reserver1 = m_reserver1;
         clone.m_reserver2 = m_reserver2;
         clone.m_strokeFlags = m_strokeFlags;
-        List<TBControlPoint> controlPoints = new List<TBControlPoint>(m_controlPoints.Count);
+        ArrayList<TBControlPoint> controlPoints = new ArrayList<TBControlPoint>(m_controlPoints.Count);
         foreach (var controlPoint in m_controlPoints) {
             controlPoints.Add(controlPoint.Clone());
         }
@@ -60,11 +60,11 @@ public class TBBrushStroke { //partial
         return clone;
     }
 
-    public Int32 brushIndex {
-        get { return m_brushIndex; }
+    public int brushIndex() {
+        return m_brushIndex;
     }
 
-    public Color brushColor {
+    public color brushColor {
         get { return m_brushColor; }
         set { m_brushColor = value; }
     }
@@ -74,8 +74,8 @@ public class TBBrushStroke { //partial
         set { m_brushSize = value; }
     }
 
-    public List<TBControlPoint> controlPoints {
-        get { return m_controlPoints; }
+    public ArrayList<TBControlPoint> controlPoints() {
+        return m_controlPoints;
     }
     
 }

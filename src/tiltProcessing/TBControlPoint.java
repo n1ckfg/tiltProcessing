@@ -5,22 +5,27 @@ import java.util.ArrayList;
 
 public class TBControlPoint {
 
+	public PVector position;
+	public Quaternion orientation;
+	public float pressure;
+	public UInt32 timestamp;
+
     TBControlPoint() {
     	//
     }
 
     public TBControlPoint(BinaryReader reader) {
-        this.position = reader.ReadVector3();
-        this.orientation = reader.ReadQuaternion();
-        this.pressure = reader.ReadFloat();
-        this.timestamp = reader.ReadUInt32(); 
+        position = reader.ReadVector3();
+        orientation = reader.ReadQuaternion();
+        pressure = reader.ReadFloat();
+        timestamp = reader.ReadUInt32(); 
     }
 
     public void Write(BinaryWriter writer) {
-        writer.Write(this.position);
-        writer.Write(this.orientation);
-        writer.Write(this.pressure);
-        writer.Write(this.timestamp);
+        writer.Write(position);
+        writer.Write(orientation);
+        writer.Write(pressure);
+        writer.Write(timestamp);
     }
 
     public TBControlPoint Clone() {
@@ -32,21 +37,16 @@ public class TBControlPoint {
         return clone;
     }
 
-    public override string ToString() {
-        return string.Format("Position={0} orientation={1} Pressure={2} Timestamp={3}", position, orientation.eulerAngles, pressure, timestamp);
+    public override String ToString() {
+        return String.Format("Position={0} orientation={1} Pressure={2} Timestamp={3}", position, orientation.eulerAngles, pressure, timestamp);
     }
 
-    public Quaternion orientation { get; set; }
-    public Vector3 position { get; set; }
-    public float pressure { get; set; }
-    public UInt32 timestamp { get; set; }
-
-    public Vector3 tangent {
-        get { return pressure * (orientation * Vector3.up); }
+    public PVector tangent() {
+        return pressure * (orientation * PVector.up);
     }
 
-    public Vector3 normal {
-        get { return orientation * Vector3.forward; }
+    public PVector normal() {
+        return orientation * PVector.forward;
     }
     
 }
