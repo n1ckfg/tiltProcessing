@@ -27,7 +27,7 @@ public class TBBrushStroke {
         int controlPointCount = reader.ReadInt32();
         m_controlPoints = new ArrayList<TBControlPoint>();
         for (int pointIndex = 0; pointIndex < controlPointCount; ++pointIndex) {
-            m_controlPoints.Add(new TBControlPoint(reader));
+            m_controlPoints.add(new TBControlPoint(reader));
         }
     }
 
@@ -38,7 +38,7 @@ public class TBBrushStroke {
         writer.Write(m_reserver1);
         writer.Write(m_reserver2);
         writer.Write(m_strokeFlags);
-        writer.Write((int) m_controlPoints.Count);
+        writer.Write((int) m_controlPoints.size());
         foreach (var controlPoint in m_controlPoints) {
             controlPoint.Write(writer);
         }
@@ -52,9 +52,9 @@ public class TBBrushStroke {
         clone.m_reserver1 = m_reserver1;
         clone.m_reserver2 = m_reserver2;
         clone.m_strokeFlags = m_strokeFlags;
-        ArrayList<TBControlPoint> controlPoints = new ArrayList<TBControlPoint>(m_controlPoints.Count);
+        ArrayList<TBControlPoint> controlPoints = new ArrayList<TBControlPoint>(m_controlPoints.size());
         foreach (var controlPoint in m_controlPoints) {
-            controlPoints.Add(controlPoint.Clone());
+            controlPoints.add(controlPoint.Clone());
         }
         clone.m_controlPoints = controlPoints;
         return clone;
@@ -109,7 +109,7 @@ public class TBBrushStroke {
     }
 
     public PVector endPosition() {
-        return controlPoints[controlPoints.Count - 1].position;
+        return controlPoints[controlPoints.size() - 1].position;
     }
 
     public void Translate(float dx, float dy, float dz) {
