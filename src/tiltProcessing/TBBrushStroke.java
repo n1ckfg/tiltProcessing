@@ -3,7 +3,7 @@ package tiltProcessing;
 import processing.core.*;
 import java.util.ArrayList;
 
-public class TBBrushStroke { //partial
+public class TBBrushStroke {
 
     int m_brushIndex;
     color m_brushColor;
@@ -78,5 +78,50 @@ public class TBBrushStroke { //partial
         return m_controlPoints;
     }
     
+    // - - - - BOUNDS - - - -
+    final float kMinValue = -10000; //const
+    final float kMaxValue = 10000; //const
+
+    public Bounds bounds() {
+        PVector min = new PVector(kMaxValue, kMaxValue, kMaxValue);
+        PVector max = new PVector(kMinValue, kMinValue, kMinValue);
+
+        foreach (var point in controlPoints) {
+            min.x = Mathf.Min(min.x, point.position.x);
+            min.y = Mathf.Min(min.y, point.position.y);
+            min.z = Mathf.Min(min.z, point.position.z);
+
+            max.x = Mathf.Min(max.x, point.position.x);
+            max.y = Mathf.Min(max.y, point.position.y);
+            max.z = Mathf.Min(max.z, point.position.z);
+        }
+
+        PVector center = 0.5f * (min + max);
+        PVector size = max - min;
+
+        return new Bounds(center, size);
+    }
+    // - - - - ...... - - - -
+
+    // - - - - TRANSFORM - - - -
+    public PVector startPosition() {
+        return controlPoints[0].position;
+    }
+
+    public PVector endPosition() {
+        return controlPoints[controlPoints.Count - 1].position;
+    }
+
+    public void Translate(float dx, float dy, float dz) {
+        Translate(new PVector(dx, dy, dz));
+    }
+
+    public void Translate(PVector offset) {
+        foreach (var point in controlPoints) {
+            point.position += offset;
+        }
+    }
+    // - - - - ......... - - - -
+
 }
 
