@@ -40,7 +40,7 @@ public class TBBrushStroke { //partial
         writer.Write(m_reserver1);
         writer.Write(m_reserver2);
         writer.Write(m_strokeFlags);
-        writer.Write((int) m_controlPoints.Count);
+        writer.Write((int) m_controlPoints.size());
         for (TBControlPoint controlPoint: m_controlPoints) {
             controlPoint.Write(writer);
         }
@@ -54,7 +54,7 @@ public class TBBrushStroke { //partial
         clone.m_reserver1 = m_reserver1;
         clone.m_reserver2 = m_reserver2;
         clone.m_strokeFlags = m_strokeFlags;
-        ArrayList<TBControlPoint> controlPoints = new ArrayList<TBControlPoint>(m_controlPoints.Count);
+        ArrayList<TBControlPoint> controlPoints = new ArrayList<TBControlPoint>(m_controlPoints.size());
         for (TBControlPoint controlPoint: m_controlPoints) {
             controlPoints.Add(controlPoint.Clone());
         }
@@ -125,7 +125,7 @@ public class TBBrushStroke { //partial
     }
 
     public PVector endPosition() {
-        return controlPoints[controlPoints.Count - 1].position;
+        return controlPoints[controlPoints.size() - 1].position;
     }
 
     public void Translate(float dx, float dy, float dz) {
