@@ -3,7 +3,7 @@ package tiltProcessing;
 import processing.core.*;
 import java.util.ArrayList;
 
-public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
+public class TBBrushStrokes { // : IEnumerable<TBBrushStroke> {
 
     final UInt32 SKETCH_SENTINEL = 3312887245u; //const
 
@@ -33,7 +33,7 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
         int strokeCount = reader.ReadInt32();
         m_brushStrokes = new ArrayList<TBBrushStroke>(strokeCount);
         for (int strokeIndex = 0; strokeIndex < strokeCount; ++strokeIndex) {
-            m_brushStrokes.add(new TBBrushStroke(reader));
+            m_brushStrokes.Add(new TBBrushStroke(reader));
         }
     }
 
@@ -43,10 +43,10 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
         writer.Write(m_reserved);
         writer.Write(m_size);
         writer.Write(m_payload);
-        writer.Write((int) m_brushStrokes.size());
+        writer.Write((int) m_brushStrokes.Count);
 
-        for (int i=0; i<m_brushStrokes.size(); i++) {
-            m_brushStrokes.get(i).Write(writer);
+        foreach (var brushStroke in m_brushStrokes) {
+            brushStroke.Write(writer);
         }
     }
 
@@ -59,7 +59,7 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
     }
 
     public void Add(TBBrushStroke brushStroke) {
-        m_brushStrokes.add(brushStroke);
+        m_brushStrokes.Add(brushStroke);
     }
 
     //#region IEnumerable implementation
@@ -86,9 +86,9 @@ public class TBBrushStrokes : IEnumerable<TBBrushStroke> {
         clone.m_reserved = m_reserved;
         clone.m_size = m_size;
         clone.m_payload = m_payload;
-        ArrayList<TBBrushStroke> brushStrokes = new ArrayList<TBBrushStroke>(m_brushStrokes.size());
+        ArrayList<TBBrushStroke> brushStrokes = new ArrayList<TBBrushStroke>(m_brushStrokes.Count);
         foreach (var brushStroke in m_brushStrokes) {
-            brushStrokes.add(brushStroke.Clone());
+            brushStrokes.Add(brushStroke.Clone());
         }
         clone.m_brushStrokes = brushStrokes;
         return clone;
