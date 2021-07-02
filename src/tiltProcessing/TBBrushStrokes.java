@@ -43,9 +43,9 @@ public class TBBrushStrokes { // : IEnumerable<TBBrushStroke> {
         writer.Write(m_reserved);
         writer.Write(m_size);
         writer.Write(m_payload);
-        writer.Write((int) m_brushStrokes.Count);
+        writer.Write((int) m_brushStrokes.size());
 
-        foreach (var brushStroke in m_brushStrokes) {
+        for (TBBrushStroke brushStroke: m_brushStrokes) {
             brushStroke.Write(writer);
         }
     }
@@ -86,8 +86,8 @@ public class TBBrushStrokes { // : IEnumerable<TBBrushStroke> {
         clone.m_reserved = m_reserved;
         clone.m_size = m_size;
         clone.m_payload = m_payload;
-        ArrayList<TBBrushStroke> brushStrokes = new ArrayList<TBBrushStroke>(m_brushStrokes.Count);
-        foreach (var brushStroke in m_brushStrokes) {
+        ArrayList<TBBrushStroke> brushStrokes = new ArrayList<TBBrushStroke>(m_brushStrokes.size());
+        for (TBBrushStroke brushStroke: m_brushStrokes) {
             brushStrokes.Add(brushStroke.Clone());
         }
         clone.m_brushStrokes = brushStrokes;
