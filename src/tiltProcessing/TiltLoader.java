@@ -22,6 +22,7 @@ public class TiltLoader {
 	public byte[] bytes;
   public JSONObject json;
   public int numStrokes;
+  public ArrayList<StrokeGeometry> strokes;
 
   private ZipFile zipFile;
   private ArrayList<String> fileNames;
@@ -29,6 +30,7 @@ public class TiltLoader {
 	public TiltLoader(PApplet _parent, String _url) {
     parent = _parent;
     url = _url;
+
     read(url);
   }
 
@@ -55,7 +57,9 @@ public class TiltLoader {
     }
   }
 
-  private void parseTilt() {
+  private void parseTilt() {   
+    strokes = new ArrayList<StrokeGeometry>();
+
     numStrokes = getInt(bytes, 16);
 
     int offset = 20;
@@ -63,7 +67,8 @@ public class TiltLoader {
     for (int i = 0; i < numStrokes; i++) {
       int brushIndex = getInt(bytes, offset);
 
-      float[] brushColor = { getFloat(bytes, offset + 4), getFloat(bytes, offset + 8), getFloat(bytes, offset + 12), getFloat(bytes, offset + 16) };
+      float[] brushColorArray = { getFloat(bytes, offset + 4), getFloat(bytes, offset + 8), getFloat(bytes, offset + 12), getFloat(bytes, offset + 16) };
+      int brushColor = floatArrayToColor(brushColorArray);
 
       float brushSize = getFloat(bytes, offset + 20);
       int strokeMask = getUInt(bytes, offset + 24);
@@ -78,39 +83,50 @@ public class TiltLoader {
         if ((controlPointMask & b) > 0) offsetControlPointMask += 4;
       }
 
-      parent.println("1. " + brushIndex + ", [" + brushColor[0] + ", " + brushColor[1] + ", " + brushColor[2] + ", " + brushColor[3] + "]," + brushSize);
-      parent.println("2. " + offsetStrokeMask + "," + offsetControlPointMask + "," + strokeMask + "," + controlPointMask);
+      //parent.println("1. " + brushIndex + ", [" + brushColorArray[0] + ", " + brushColorArray[1] + ", " + brushColorArray[2] + ", " + brushColorArray[3] + "]," + brushSize);
+      //parent.println("2. " + offsetStrokeMask + "," + offsetControlPointMask + "," + strokeMask + "," + controlPointMask);
 
       offset = offset + 28 + offsetStrokeMask + 4; // TOFIX: This is wrong
 
       int numControlPoints = getInt(bytes, offset);
 
-      parent.println("3. " + numControlPoints);
+      //parent.println("3. " + numControlPoints);
 
-      float[] positions = new float[numControlPoints * 3];
+      float[] positionsArray = new float[numControlPoints * 3];
+      float[] quaternionsArray = new float[numControlPoints * 4];
+      ArrayList<PVector> positions = new ArrayList<PVector>();
 
       offset = offset + 4;
 
-      for (int j = 0; j < positions.length; j += 3) {
-        positions[j + 0] = getFloat(bytes, offset + 0);
-        positions[j + 1] = getFloat(bytes, offset + 4);
-        positions[j + 2] = getFloat(bytes, offset + 8);
+      for (int j = 0, k = 0; j < positionsArray.length; j += 3, k += 4) {
+        positionsArray[j + 0] = getFloat(bytes, offset + 0);
+        positionsArray[j + 1] = getFloat(bytes, offset + 4);
+        positionsArray[j + 2] = getFloat(bytes, offset + 8);
+
+        quaternionsArray[k + 0] = getFloat(bytes, offset + 12);
+        quaternionsArray[k + 1] = getFloat(bytes, offset + 16);
+        quaternionsArray[k + 2] = getFloat(bytes, offset + 20);
+        quaternionsArray[k + 3] = getFloat(bytes, offset + 24);
 
         offset = offset + 28 + offsetControlPointMask; // TOFIX: This is wrong
       }
 
-      /*
-      if ( brushIndex in brushes === false ) {
-        brushes[ brushIndex ] = [];
+      //parent.println("4. " + positionsArray[0] + ", " + positionsArray[1] + ", " + positionsArray[2]);
+      
+      for (int j=0; j<positionsArray.length; j+=3) {
+        positions.add(new PVector(positionsArray[j], positionsArray[j+1], positionsArray[j+2]));
       }
 
-      brushes[ brushIndex ].push( [ positions, quaternions, brushSize, brushColor ] );
-      */
+      strokes.add(new StrokeGeometry(parent, positions, brushSize, brushColor));
     }
   }
 
-  private void buildTilt() {
-    // TODO
+  private int floatArrayToColor(float[] input) {
+    float r = input[0] * 255;
+    float g = input[1] * 255;
+    float b = input[2] * 255;
+    float a = input[3] * 255;
+    return parent.color(r, g, b, a);
   }
 
   private int getUInt(byte[] _bytes, int _offset) {
