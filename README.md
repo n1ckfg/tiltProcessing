@@ -1,2 +1,5 @@
 # tiltProcessing
-Read Tilt Brush files in Processing. Last tested in Processing 3.5.
+Tilt Brush reader for Processing by @n1ckfg.
+Adapted from three.js TiltLoader.
+
+Last tested in Processing 3.5.

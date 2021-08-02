@@ -1,3 +1,8 @@
+/*
+Tilt Brush reader for Processing by @n1ckfg.
+Adapted from three.js TiltLoader.
+*/
+
 package tiltProcessing;
 
 import java.io.*;
@@ -86,7 +91,7 @@ public class TiltLoader {
       //parent.println("1. " + brushIndex + ", [" + brushColorArray[0] + ", " + brushColorArray[1] + ", " + brushColorArray[2] + ", " + brushColorArray[3] + "]," + brushSize);
       //parent.println("2. " + offsetStrokeMask + "," + offsetControlPointMask + "," + strokeMask + "," + controlPointMask);
 
-      offset = offset + 28 + offsetStrokeMask + 4; // TOFIX: This is wrong
+      offset = offset + 28 + offsetStrokeMask + 4; 
 
       int numControlPoints = getInt(bytes, offset);
 
@@ -108,7 +113,7 @@ public class TiltLoader {
         quaternionsArray[k + 2] = getFloat(bytes, offset + 20);
         quaternionsArray[k + 3] = getFloat(bytes, offset + 24);
 
-        offset = offset + 28 + offsetControlPointMask; // TOFIX: This is wrong
+        offset = offset + 28 + offsetControlPointMask; 
       }
 
       //parent.println("4. " + positionsArray[0] + ", " + positionsArray[1] + ", " + positionsArray[2]);
@@ -202,25 +207,6 @@ public class TiltLoader {
   private String getFilePath(String fileName) {
     String returns = parent.dataPath(fileName);
     return returns;
-  }
-
-  private float remap(float s, float a1, float a2, float b1, float b2) {
-      return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
-  }
-
-  private boolean hitDetect3D(PVector p1, PVector p2, float s) { 
-    if (PVector.dist(p1, p2) < s) {
-      return true;
-    } else {
-      return false;
-    }
-  }
- 
-  private float rounder(float _val, float _places){
-    _val *= parent.pow(10, _places);
-    _val = parent.round(_val);
-    _val /= parent.pow(10, _places);
-    return _val;
   }
 
 }

@@ -18,7 +18,6 @@ void setup() {
 void draw() {
   background(127);
   pushMatrix();
-  //translate(width/2, height/2, 600);
   scale(10);
   for (StrokeGeometry strokeGeo : tiltLoader.strokes) {
     stroke(strokeGeo.brushColor);
