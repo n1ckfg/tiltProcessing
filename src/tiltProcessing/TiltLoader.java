@@ -60,77 +60,62 @@ public class TiltLoader {
 
     int offset = 20;
 
-    /*
     for (int i = 0; i < numStrokes; i++) {
+      int brushIndex = getInt(bytes, offset);
 
-      const brush_index = data.getInt32( offset, true );
+      float[] brushColor = { getFloat(bytes, offset + 4), getFloat(bytes, offset + 8), getFloat(bytes, offset + 12), getFloat(bytes, offset + 16) };
 
-      const brush_color = [
-        data.getFloat32( offset + 4, true ),
-        data.getFloat32( offset + 8, true ),
-        data.getFloat32( offset + 12, true ),
-        data.getFloat32( offset + 16, true )
-      ];
-      const brush_size = data.getFloat32( offset + 20, true );
-      const stroke_mask = data.getUint32( offset + 24, true );
-      const controlpoint_mask = data.getUint32( offset + 28, true );
+      float brushSize = getFloat(bytes, offset + 20);
+      int strokeMask = getUInt(bytes, offset + 24);
+      int controlPointMask = getUInt(bytes, offset + 28);
 
-      let offset_stroke_mask = 0;
-      let offset_controlpoint_mask = 0;
+      int offsetStrokeMask = 0;
+      int offsetControlPointMask = 0;
 
-      for ( let j = 0; j < 4; j ++ ) {
-
-        // TOFIX: I don't understand these masks yet
-
-        const byte = 1 << j;
-        if ( ( stroke_mask & byte ) > 0 ) offset_stroke_mask += 4;
-        if ( ( controlpoint_mask & byte ) > 0 ) offset_controlpoint_mask += 4;
-
+      for (int j = 0; j < 4; j++) {
+        byte b = (byte) (1 << j);
+        if ((strokeMask & b) > 0) offsetStrokeMask += 4;
+        if ((controlPointMask & b) > 0) offsetControlPointMask += 4;
       }
 
-      // console.log( { brush_index, brush_color, brush_size, stroke_mask, controlpoint_mask } );
-      // console.log( offset_stroke_mask, offset_controlpoint_mask );
+      parent.println("1. " + brushIndex + ", [" + brushColor[0] + ", " + brushColor[1] + ", " + brushColor[2] + ", " + brushColor[3] + "]," + brushSize);
+      parent.println("2. " + offsetStrokeMask + "," + offsetControlPointMask + "," + strokeMask + "," + controlPointMask);
 
-      offset = offset + 28 + offset_stroke_mask + 4; // TOFIX: This is wrong
+      offset = offset + 28 + offsetStrokeMask + 4; // TOFIX: This is wrong
 
-      const num_control_points = data.getInt32( offset, true );
+      int numControlPoints = getInt(bytes, offset);
 
-      // console.log( { num_control_points } );
+      parent.println("3. " + numControlPoints);
 
-      const positions = new Float32Array( num_control_points * 3 );
-      const quaternions = new Float32Array( num_control_points * 4 );
+      float[] positions = new float[numControlPoints * 3];
 
       offset = offset + 4;
 
-      for ( let j = 0, k = 0; j < positions.length; j += 3, k += 4 ) {
+      for (int j = 0; j < positions.length; j += 3) {
+        positions[j + 0] = getFloat(bytes, offset + 0);
+        positions[j + 1] = getFloat(bytes, offset + 4);
+        positions[j + 2] = getFloat(bytes, offset + 8);
 
-        positions[ j + 0 ] = data.getFloat32( offset + 0, true );
-        positions[ j + 1 ] = data.getFloat32( offset + 4, true );
-        positions[ j + 2 ] = data.getFloat32( offset + 8, true );
-
-        quaternions[ k + 0 ] = data.getFloat32( offset + 12, true );
-        quaternions[ k + 1 ] = data.getFloat32( offset + 16, true );
-        quaternions[ k + 2 ] = data.getFloat32( offset + 20, true );
-        quaternions[ k + 3 ] = data.getFloat32( offset + 24, true );
-
-        offset = offset + 28 + offset_controlpoint_mask; // TOFIX: This is wrong
-
+        offset = offset + 28 + offsetControlPointMask; // TOFIX: This is wrong
       }
 
-      if ( brush_index in brushes === false ) {
-
-        brushes[ brush_index ] = [];
-
+      /*
+      if ( brushIndex in brushes === false ) {
+        brushes[ brushIndex ] = [];
       }
 
-      brushes[ brush_index ].push( [ positions, quaternions, brush_size, brush_color ] );
-
+      brushes[ brushIndex ].push( [ positions, quaternions, brushSize, brushColor ] );
+      */
     }
-    */
   }
 
   private void buildTilt() {
     // TODO
+  }
+
+  private int getUInt(byte[] _bytes, int _offset) {
+    byte[] uintBytes = { _bytes[_offset], _bytes[_offset+1], _bytes[_offset+2], _bytes[_offset+3] };
+    return asUInt(uintBytes);
   }
 
   private int getInt(byte[] _bytes, int _offset) {
@@ -141,6 +126,12 @@ public class TiltLoader {
   private float getFloat(byte[] _bytes, int _offset) {
     byte[] floatBytes = { _bytes[_offset], _bytes[_offset+1], _bytes[_offset+2], _bytes[_offset+3] };
     return asFloat(floatBytes);
+  }
+
+  private int asUInt(byte[] _bytes) {
+    int i = asInt(_bytes);
+    long unsigned = i & 0xffffffffL;
+    return (int) unsigned;
   }
 
   private int asInt(byte[] _bytes) {
