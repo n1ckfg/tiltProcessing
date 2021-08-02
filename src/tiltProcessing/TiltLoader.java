@@ -27,7 +27,7 @@ public class TiltLoader {
 	public byte[] bytes;
   public JSONObject json;
   public int numStrokes;
-  public ArrayList<StrokeGeometry> strokes;
+  public ArrayList<TiltStroke> strokes;
 
   private ZipFile zipFile;
   private ArrayList<String> fileNames;
@@ -63,7 +63,7 @@ public class TiltLoader {
   }
 
   private void parseTilt() {   
-    strokes = new ArrayList<StrokeGeometry>();
+    strokes = new ArrayList<TiltStroke>();
 
     numStrokes = getInt(bytes, 16);
 
@@ -120,7 +120,7 @@ public class TiltLoader {
 
       //parent.println("4. " + positions.get(0).x + ", " + positions.get(0).y + ", " + positions.get(0).z);
 
-      strokes.add(new StrokeGeometry(parent, positions, brushSize, brushColor));
+      strokes.add(new TiltStroke(parent, positions, brushSize, brushColor));
     }
   }
 

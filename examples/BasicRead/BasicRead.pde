@@ -19,11 +19,11 @@ void draw() {
   background(127);
   pushMatrix();
   scale(10);
-  for (StrokeGeometry strokeGeo : tiltLoader.strokes) {
-    stroke(strokeGeo.brushColor);
+  for (TiltStroke tiltStroke : tiltLoader.strokes) {
+    stroke(tiltStroke.brushColor);
     noFill();
     beginShape(TRIANGLE_STRIP);
-    for (PVector point : strokeGeo.positions) {
+    for (PVector point : tiltStroke.positions) {
       vertex(point.x, point.y, point.z);
     }
     endShape();
