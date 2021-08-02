@@ -72,8 +72,11 @@ public class TiltLoader {
     for (int i = 0; i < numStrokes; i++) {
       int brushIndex = getInt(bytes, offset);
 
-      float[] brushColorArray = { getFloat(bytes, offset + 4), getFloat(bytes, offset + 8), getFloat(bytes, offset + 12), getFloat(bytes, offset + 16) };
-      int brushColor = floatArrayToColor(brushColorArray);
+      float r = getFloat(bytes, offset + 4) * 255;
+      float g = getFloat(bytes, offset + 8) * 255;
+      float b = getFloat(bytes, offset + 12) * 255;
+      float a = getFloat(bytes, offset + 16) * 255;
+      int brushColor = parent.color(r, g, b, a);
 
       float brushSize = getFloat(bytes, offset + 20);
       int strokeMask = getUInt(bytes, offset + 24);
@@ -83,55 +86,42 @@ public class TiltLoader {
       int offsetControlPointMask = 0;
 
       for (int j = 0; j < 4; j++) {
-        byte b = (byte) (1 << j);
-        if ((strokeMask & b) > 0) offsetStrokeMask += 4;
-        if ((controlPointMask & b) > 0) offsetControlPointMask += 4;
+        byte bb = (byte) (1 << j);
+        if ((strokeMask & bb) > 0) offsetStrokeMask += 4;
+        if ((controlPointMask & bb) > 0) offsetControlPointMask += 4;
       }
 
       //parent.println("1. " + brushIndex + ", [" + brushColorArray[0] + ", " + brushColorArray[1] + ", " + brushColorArray[2] + ", " + brushColorArray[3] + "]," + brushSize);
       //parent.println("2. " + offsetStrokeMask + "," + offsetControlPointMask + "," + strokeMask + "," + controlPointMask);
 
-      offset = offset + 28 + offsetStrokeMask + 4; 
+      offset += 28 + offsetStrokeMask + 4; 
 
       int numControlPoints = getInt(bytes, offset);
 
       //parent.println("3. " + numControlPoints);
 
-      float[] positionsArray = new float[numControlPoints * 3];
-      float[] quaternionsArray = new float[numControlPoints * 4];
       ArrayList<PVector> positions = new ArrayList<PVector>();
 
-      offset = offset + 4;
+      offset += 4;
 
-      for (int j = 0, k = 0; j < positionsArray.length; j += 3, k += 4) {
-        positionsArray[j + 0] = getFloat(bytes, offset + 0);
-        positionsArray[j + 1] = getFloat(bytes, offset + 4);
-        positionsArray[j + 2] = getFloat(bytes, offset + 8);
+      for (int j = 0; j < numControlPoints; j++) {
+        float x = getFloat(bytes, offset + 0);
+        float y = getFloat(bytes, offset + 4);
+        float z = getFloat(bytes, offset + 8);
+        positions.add(new PVector(x, y, z));
 
-        quaternionsArray[k + 0] = getFloat(bytes, offset + 12);
-        quaternionsArray[k + 1] = getFloat(bytes, offset + 16);
-        quaternionsArray[k + 2] = getFloat(bytes, offset + 20);
-        quaternionsArray[k + 3] = getFloat(bytes, offset + 24);
+        //float qw = getFloat(bytes, offset + 12);
+        //float qx = getFloat(bytes, offset + 16);
+        //float qy = getFloat(bytes, offset + 20);
+        //float qz = getFloat(bytes, offset + 24);
 
-        offset = offset + 28 + offsetControlPointMask; 
+        offset += 28 + offsetControlPointMask; 
       }
 
-      //parent.println("4. " + positionsArray[0] + ", " + positionsArray[1] + ", " + positionsArray[2]);
-      
-      for (int j=0; j<positionsArray.length; j+=3) {
-        positions.add(new PVector(positionsArray[j], positionsArray[j+1], positionsArray[j+2]));
-      }
+      //parent.println("4. " + positions.get(0).x + ", " + positions.get(0).y + ", " + positions.get(0).z);
 
       strokes.add(new StrokeGeometry(parent, positions, brushSize, brushColor));
     }
-  }
-
-  private int floatArrayToColor(float[] input) {
-    float r = input[0] * 255;
-    float g = input[1] * 255;
-    float b = input[2] * 255;
-    float a = input[3] * 255;
-    return parent.color(r, g, b, a);
   }
 
   private int getUInt(byte[] _bytes, int _offset) {
