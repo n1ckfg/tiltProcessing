@@ -9,23 +9,20 @@ void setup() {
   
   cam = new PeasyCam(this, 400);
 
-  tl = new TiltLoader(this, "sketch.tilt");
-  
-  println(tl.numStrokes);
+  tl = new TiltLoader(this, "Untitled_2.tilt");
+
+  println(tiltLoader.numStrokes);
 }
 
 void draw() {
-  background(127);
-  pushMatrix();
-  scale(10);
+  background(0);
   for (TiltStroke ts : tl.strokes) {
-    stroke(ts.brushColor);
     noFill();
-    beginShape(TRIANGLE_STRIP);
+    stroke(ts.brushColor);
+    beginShape();
     for (PVector p : ts.positions) {
       vertex(p.x, p.y, p.z);
     }
     endShape();
   }
-  popMatrix();
 }
