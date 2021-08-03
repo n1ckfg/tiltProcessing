@@ -7,6 +7,7 @@ PShape shp;
 
 void setup() {
   size(800, 600, P3D);
+  noCursor();
   
   cam = new PeasyCam(this, 250);
   float fov = PI/3.0;
@@ -30,18 +31,29 @@ void setup() {
     sShp.endShape();
     shp.addChild(sShp);
   }  
+  
+  bloomSetup();
 }
 
 void draw() {
   background(0);
+
+  tex.beginDraw();
+  tex.background(0);
+  tex.pushMatrix();
+  tex.translate(10, 80, 0);
+  tex.rotateX(radians(90));
+  tex.rotateY(radians(90));
+  tex.rotateZ(radians(90));
+  tex.shape(shp);
+  tex.popMatrix();
+  tex.endDraw();
+   
+  cam.getState().apply(tex);
   
-  pushMatrix();
-  translate(10, 80, 0);
-  rotateX(radians(90));
-  rotateY(radians(90));
-  rotateZ(radians(90));
-  shape(shp);
-  popMatrix();
+  cam.beginHUD();
+  bloomDraw();
+  cam.endHUD();
   
   surface.setTitle(""+frameRate);
 }

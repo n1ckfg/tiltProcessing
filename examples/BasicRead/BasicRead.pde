@@ -7,6 +7,7 @@ PShape shp;
 
 void setup() {
   size(800, 600, P3D);
+  noCursor();
   
   cam = new PeasyCam(this, 250);
   float fov = PI/3.0;

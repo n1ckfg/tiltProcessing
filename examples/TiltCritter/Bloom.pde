@@ -15,8 +15,8 @@ void bloomSetup() {
   context = new DwPixelFlow(this);
   filter = new DwFilter(context);
   //filter.bloom.setBlurLayers(10);
-  filter.bloom.param.mult = 3.5; // 0.0-10.0
-  filter.bloom.param.radius = 0.5; // 0.0-1.0
+  filter.bloom.param.mult = 1.0; // 0.0-10.0
+  filter.bloom.param.radius = 0.2; // 0.0-1.0
 }
 
 // For a simple scene, just put this at the end of the draw loop.
